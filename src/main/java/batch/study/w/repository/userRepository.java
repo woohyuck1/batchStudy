@@ -1,10 +1,12 @@
 package batch.study.w.repository;
 
-import batch.study.w.dto.userDto;
+import batch.study.w.entity.userEntity;
 
-import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface userRepository {
+import java.util.Optional;
 
-	List<userDto> findAll();
+public interface userRepository extends JpaRepository<userEntity, Long>, userRepositoryDsl {
+
+	Optional<userEntity> findByUserIdAndDelYn(String userId, Integer delYn);
 }

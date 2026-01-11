@@ -1,5 +1,6 @@
 package batch.study.w.dto;
 
+import batch.study.w.entity.userEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,4 +19,14 @@ public class userDto {
 	private String userName;
 	private Integer creDt;
 	private Integer delYn;
+
+	public static userDto from(userEntity userEntity) {
+		return userDto.builder()
+			// .userSeq(userEntity.getUserSeq())
+			.userId(userEntity.getUserId())
+			.userName(userEntity.getUserName())
+			.creDt(userEntity.getCreDt())
+			.delYn(userEntity.getDelYn())
+			.build();
+	}
 }

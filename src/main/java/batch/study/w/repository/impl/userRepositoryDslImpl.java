@@ -1,7 +1,8 @@
 package batch.study.w.repository.impl;
 
 import batch.study.w.dto.userDto;
-import batch.study.w.repository.userRepository;
+import batch.study.w.repository.userRepositoryDsl;
+
 import com.querydsl.core.types.QBean;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -14,7 +15,7 @@ import static batch.study.w.entity.QuserEntity.userEntity;
 
 @Repository
 @RequiredArgsConstructor
-public class userRepositoryImpl implements userRepository {
+public class userRepositoryDslImpl implements userRepositoryDsl {
 
 	private final JPAQueryFactory queryFactory;
 
@@ -27,7 +28,7 @@ public class userRepositoryImpl implements userRepository {
 	);
 
 	@Override
-	public List<userDto> findAll() {
+	public List<userDto> findAllUsers() {
 		return queryFactory
 			.select(USERCONSTRUCTOR)
 			.from(userEntity)
