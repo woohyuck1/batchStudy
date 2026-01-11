@@ -11,21 +11,26 @@ public class apiResponse<T> {
 
 	private boolean success;
 	private String message;
+	private String errorCode;
 	private T data;
 
 	public static <T> apiResponse<T> success(T data) {
-		return new apiResponse<>(true, "성공", data);
+		return new apiResponse<>(true, "성공", null, data);
 	}
 
 	public static <T> apiResponse<T> success(String message, T data) {
-		return new apiResponse<>(true, message, data);
+		return new apiResponse<>(true, message, null, data);
 	}
 
 	public static <T> apiResponse<T> error(String message) {
-		return new apiResponse<>(false, message, null);
+		return new apiResponse<>(false, message, null, null);
+	}
+
+	public static <T> apiResponse<T> error(String message, String errorCode) {
+		return new apiResponse<>(false, message, errorCode, null);
 	}
 
 	public static <T> apiResponse<T> error(String message, T data) {
-		return new apiResponse<>(false, message, data);
+		return new apiResponse<>(false, message, null, data);
 	}
 }

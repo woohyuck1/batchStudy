@@ -17,16 +17,16 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<apiResponse<Void>> handleBusinessException(BusinessException e) {
 		log.error("BusinessException ---> [{}] {}", e.getCode(), e.getMessage());
 		
-		// JWT 관련 에러는 401 Unauthorized로 처리
+	
 		if ("J001".equals(e.getCode())) {
 			return ResponseEntity
 				.status(HttpStatus.UNAUTHORIZED)
-				.body(apiResponse.error(e.getMessage()));
+				.body(apiResponse.error(e.getMessage(), e.getCode()));
 		}
 		
 		return ResponseEntity
 			.status(HttpStatus.BAD_REQUEST)
-			.body(apiResponse.error(e.getMessage()));
+			.body(apiResponse.error(e.getMessage(), e.getCode()));
 	}
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)

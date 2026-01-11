@@ -7,6 +7,8 @@ import batch.study.w.dto.loginResponseDto;
 import batch.study.w.dto.userDto;
 import batch.study.w.dto.userRequestDto;
 import batch.study.w.entity.userEntity;
+import batch.study.w.entity.userPointEntity;
+import batch.study.w.repository.userPointRepository;
 import batch.study.w.repository.userRepository;
 import batch.study.w.service.userService;
 import batch.study.w.util.jwtUtil;
@@ -24,6 +26,7 @@ public class userServiceImpl implements userService {
 	private final userRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
 	private final jwtUtil jwtUtil;
+	private final userPointRepository userPointRepository;
 
 	@Override
 	@Transactional(readOnly = true)
@@ -43,6 +46,14 @@ public class userServiceImpl implements userService {
 			.build();
 
 		userEntity savedEntity = userRepository.save(newUser);
+		long userSeq = savedEntity.getUserSeq();
+
+		userPointEntity userPoint = userPointEntity.builder()
+			.userSeq(userSeq)
+			.point(0)
+			.build();
+
+		userPointRepository.save(userPoint);
 
 		return userDto.from(savedEntity);
 	}
@@ -54,6 +65,10 @@ public class userServiceImpl implements userService {
 		userEntity user = userRepository.findByUserIdAndDelYn(loginRequestDto.getUserId(), 0)
 			.orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
 
+		return createLoginResponse(user, loginRequestDto);
+	}
+
+	private loginResponseDto createLoginResponse(userEntity user, loginRequestDto loginRequestDto) {
 		// 비밀번호 검증
 		if (!passwordEncoder.matches(loginRequestDto.getPassword(), user.getPassword())) {
 			throw new BusinessException(ErrorCode.LOGIN_FAILED);
@@ -62,7 +77,7 @@ public class userServiceImpl implements userService {
 		// JWT 토큰 생성
 		String accessToken = jwtUtil.generateToken(user.getUserSeq(), user.getUserId());
 
-		// 응답 DTO 생성
+		// 응답 DTO 생성 
 		return loginResponseDto.builder()
 			.accessToken(accessToken)
 			.tokenType("Bearer")
