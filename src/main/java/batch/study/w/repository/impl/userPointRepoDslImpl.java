@@ -10,7 +10,7 @@ import static batch.study.w.entity.QuserPointEntity.userPointEntity;
 
 @Repository
 @RequiredArgsConstructor
-public class userPointRepositoryDslImpl implements userPointRepositoryDsl {
+public class userPointRepoDslImpl implements userPointRepositoryDsl {
 
 	private final JPAQueryFactory queryFactory;
 

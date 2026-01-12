@@ -1,7 +1,7 @@
 package batch.study.w.repository.impl;
 
 import batch.study.w.dto.userDto;
-import batch.study.w.repository.userRepositoryDsl;
+import batch.study.w.repository.userRepoDsl;
 
 import com.querydsl.core.types.QBean;
 import com.querydsl.core.types.Projections;
@@ -15,7 +15,7 @@ import static batch.study.w.entity.QuserEntity.userEntity;
 
 @Repository
 @RequiredArgsConstructor
-public class userRepositoryDslImpl implements userRepositoryDsl {
+public class userRepoDslImpl implements userRepoDsl {
 
 	private final JPAQueryFactory queryFactory;
 

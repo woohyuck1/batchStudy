@@ -1,11 +1,11 @@
 package batch.study.w.service;
 
-import batch.study.w.dto.loginRequestDto;
-import batch.study.w.dto.loginResponseDto;
 import batch.study.w.dto.userDto;
 import batch.study.w.dto.userRequestDto;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 
 public interface userService {
 
@@ -13,6 +13,8 @@ public interface userService {
 
 	userDto save(userRequestDto userRequestDto);
 
-	loginResponseDto login(loginRequestDto loginRequestDto);
+	Map<String, List<List<String>>> readExcel(MultipartFile file);
+
+	List<userDto> saveFromExcel(MultipartFile file);
 }
 

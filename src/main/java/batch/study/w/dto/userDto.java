@@ -17,6 +17,7 @@ public class userDto {
 	private Long userSeq;
 	private String userId;
 	private String userName;
+	private String password;
 	private Integer creDt;
 	private Integer delYn;
 
