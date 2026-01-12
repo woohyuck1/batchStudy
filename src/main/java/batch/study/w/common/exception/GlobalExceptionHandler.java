@@ -17,7 +17,6 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<apiResponse<Void>> handleBusinessException(BusinessException e) {
 		log.error("BusinessException ---> [{}] {}", e.getCode(), e.getMessage());
 		
-	
 		if ("J001".equals(e.getCode())) {
 			return ResponseEntity
 				.status(HttpStatus.UNAUTHORIZED)

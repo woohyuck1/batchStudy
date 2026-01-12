@@ -28,6 +28,9 @@ public class userPointEntity extends baseEntity {
 	@Column(name = "point")
 	private Integer point;
 
+	@Column(name = "increment_dt")
+	private Integer incrementDt;  // 마지막으로 point가 증가된 날짜 (Unix timestamp)
+
 	@Builder
 	public userPointEntity(Long userSeq, Integer point) {
 		this.userSeq = userSeq;
@@ -36,6 +39,14 @@ public class userPointEntity extends baseEntity {
 
 	public void updatePoint(Integer point) {
 		this.point = point;
+	}
+
+	public void incrementPoint() {
+		if (this.point == null) {
+			this.point = 1;
+		} else {
+			this.point = this.point + 1;
+		}
 	}
 }
 
