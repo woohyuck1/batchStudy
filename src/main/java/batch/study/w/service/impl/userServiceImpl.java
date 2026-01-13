@@ -88,25 +88,31 @@ public class userServiceImpl implements userService {
 			boolean hasHeader = excelUtil.isHeaderRow(firstRow);
 			int userIdColumnIndex = 0;
 			int userNameColumnIndex = 1;
-
+			log.info("hasHeader: {}", hasHeader);
 			if (hasHeader) {
+				log.info("????????????");
 				// 헤더에서 컬럼 인덱스 찾기
 				userIdColumnIndex = excelUtil.findColumnIndex(firstRow, "아이디", "user id", "userid", "id");
 				userNameColumnIndex = excelUtil.findColumnIndex(firstRow, "username", "이름", "사용자", "name");
-
+				log.info("userIdColumnIndex: {}", userIdColumnIndex);
+				log.info("userNameColumnIndex: {}", userNameColumnIndex);
 				if (userIdColumnIndex == -1) {
 					throw new BusinessException(ErrorCode.EXCEL_COLUMN_NOT_FOUND);
 				}
 				if (userNameColumnIndex == -1) {
 					throw new BusinessException(ErrorCode.EXCEL_COLUMN_NOT_FOUND);
 				}
+			}else{
+				log.info("????????????");
+				throw new BusinessException(ErrorCode.EXCEL_COLUMN_NOT_FOUND);
 			}
 
 		int startRow = hasHeader ? 1 : 0;
 		int lastRowNum = sheet.getLastRowNum();
 		log.info("Excel 행 수: {}", lastRowNum - startRow + 1);
 
-		// 비밀번호 미리 생성 및 암호화 (한 번만 수행)
+		// 비밀번호 미리 생성 및 암호화
+		// 비밀번호를 공백으로 하고 최초 로그인시? 이메일이나 sns으로 처리하면 좋겠넹
 		SecureRandom random = new SecureRandom();
 		String defaultPassword = String.format("%04d", random.nextInt(1000));
 		String encodedPassword = passwordEncoder.encode(defaultPassword);

@@ -46,7 +46,7 @@ public class pointIncrementScheduler {
 	 * - 요일: ? (특정 요일 지정 안함)
 	 * 
 	 */
-	@Scheduled(cron = "20 * * * * ?")
+	@Scheduled(cron = "0 0 0 * * ?")
 	public void runPointIncrementJob() {
 		try {
 			log.info("Point 증가 Job 시작");

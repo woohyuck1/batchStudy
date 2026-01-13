@@ -31,11 +31,12 @@ public class userBatchRepoImpl implements userBatchRepo {
 		int creDt = (int) Instant.now().getEpochSecond();
 
 		// User 테이블 Batch Insert (RETURN_GENERATED_KEYS 사용)
+		// RETURN_GENERATED_KEYS : 생성된 키를 받아오는 옵션
+		// PreparedStatement : 데이터베이스 쿼리를 실행하는 객체
 		String userInsertSql = "INSERT INTO user (user_id, user_name, password, cre_dt, del_yn) VALUES (?, ?, ?, ?, 0)";
 		
 		List<userDto> savedUsers = new ArrayList<>();
 		
-		// PreparedStatement를 직접 사용하여 생성된 키를 받아옴
 		jdbcTemplate.execute((ConnectionCallback<Void>) connection -> {
 			try (PreparedStatement ps = connection.prepareStatement(userInsertSql, PreparedStatement.RETURN_GENERATED_KEYS)) {
 				for (userDto dto : userDtoList) {
@@ -52,7 +53,7 @@ public class userBatchRepoImpl implements userBatchRepo {
 				try (var generatedKeys = ps.getGeneratedKeys()) {
 					int index = 0;
 					while (generatedKeys.next()) {
-						Long userSeq = generatedKeys.getLong(1);
+						Long userSeq = generatedKeys.getLong(1);	//첫번째 컬럼 (user_seq)
 						userDto dto = userDtoList.get(index);
 						
 						userDto savedUser = userDto.builder()
@@ -87,13 +88,14 @@ public class userBatchRepoImpl implements userBatchRepo {
 		jdbcTemplate.batchUpdate(
 			pointInsertSql,
 			new BatchPreparedStatementSetter() {
+
 				@Override
 				public void setValues(PreparedStatement ps, int i) throws SQLException {
 					ps.setLong(1, userSeqList.get(i));
 					ps.setInt(2, creDt);
 				}
 
-				@Override
+				@Override		//배치를 몇번 반복하는지
 				public int getBatchSize() {
 					return userSeqList.size();
 				}

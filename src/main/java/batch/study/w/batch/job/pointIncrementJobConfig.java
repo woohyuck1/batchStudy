@@ -1,5 +1,6 @@
 package batch.study.w.batch.job;
 
+import batch.study.w.batch.listener.batchErrorLogListener;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
@@ -28,6 +29,7 @@ public class pointIncrementJobConfig {
 	private final JobRepository jobRepository;
 	private final PlatformTransactionManager transactionManager;
 	private final JdbcTemplate jdbcTemplate;
+	private final batchErrorLogListener batchErrorLogListener;
 
 	/**
 	 * Point 증가 Job
@@ -36,6 +38,7 @@ public class pointIncrementJobConfig {
 	@Bean
 	public Job pointIncrementJob(Step pointIncrementStep) {
 		return new JobBuilder("pointIncrementJob", jobRepository)
+			.listener(batchErrorLogListener)
 			.start(pointIncrementStep)
 			.build();
 	}

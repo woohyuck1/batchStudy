@@ -49,7 +49,7 @@ public class batchController {
 				.toJobParameters();
 
 			jobLauncher.run(pointIncrementJob, jobParameters);
-
+			
 			log.info("Point 증가 Job 수동 실행 완료");
 
 			return ResponseEntity.ok(
