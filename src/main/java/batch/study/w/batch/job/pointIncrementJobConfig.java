@@ -31,6 +31,13 @@ public class pointIncrementJobConfig {
 	private final JdbcTemplate jdbcTemplate;
 	private final batchErrorLogListener batchErrorLogListener;
 
+	/*  
+		Job = 하나의 비즈니스 배치 프로세스
+		Step = Job을 구성하는 하나의 작업 단위 job 하나에 여러 step이 있을 수 있음
+	 	Tasklet = Step을 구성하는 작업 단위
+		Chunk = Reader가 null 될 때까지 반복 + N건마다 commit  chunk(100) = 100건을 하나의 트랜잭션으로 처리
+		commit = db에저장 
+	*/
 	/**
 	 * Point 증가 Job
 	 * 

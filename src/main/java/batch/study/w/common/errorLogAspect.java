@@ -26,7 +26,9 @@ public class errorLogAspect {
 		String endpoint = ((MethodSignature) joinPoint.getSignature()).getMethod().getName();
 		
 		log.debug("AOP 적용 - Service: {}, Method: {}", service, endpoint);
-		
+		//	서비스단에서 바로 처리하면 서비스 처리 지연이 발생함 -> 사용자가 불편함을 느낄지도
+		// 카프카는 비동기 처리  
+		// userSeq도 추카해서 하면 좋겠당
 		try {
 			
 			return joinPoint.proceed(); // 실제 메서드 호출

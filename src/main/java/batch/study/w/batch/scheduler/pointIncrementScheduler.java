@@ -16,15 +16,9 @@ import java.time.LocalDate;
  * 
  * 매일 자정(00:00:00)에 pointIncrementJob을 실행
  * 
- * ⚠️ 핵심 원칙:
- * - 배치 재시도는 "운영자가"
- * - 재실행은 "Spring Batch가"
+ * - 배치 재시도는 운영자가
+ * - 재실행은 Spring Batch가
  * - Scheduler는 "트리거만"
- * 
- * ❌ Scheduler에서 retry 로직 구현 금지:
- * - 같은 날 여러 번 point 증가 위험
- * - Job 상태 꼬임
- * - 운영자가 추적 불가
  */
 @Slf4j
 @Component
@@ -41,8 +35,8 @@ public class pointIncrementScheduler {
 	 * - 초: 0
 	 * - 분: 0
 	 * - 시: 0
-	 * - 일: * (매일)
-	 * - 월: * (매월)
+	 * - 일: 0 
+	 * - 월: 0 
 	 * - 요일: ? (특정 요일 지정 안함)
 	 * 
 	 */
@@ -52,6 +46,7 @@ public class pointIncrementScheduler {
 			log.info("Point 증가 Job 시작");
 			
 			// runDate 기반 JobParameters: 같은 날 중복 실행 방지
+			//	JobParameters = 배치 작업에 전달되는 파라미터
 			JobParameters jobParameters = new JobParametersBuilder()
 				.addString("runDate", LocalDate.now().toString())
 				.toJobParameters();
