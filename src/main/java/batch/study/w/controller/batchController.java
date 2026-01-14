@@ -11,6 +11,7 @@ import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.launch.JobLauncher;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -42,13 +43,16 @@ public class batchController {
 		try {
 			log.info("Point 증가 Job 수동 실행 시작");
 
-			// runDate 기반 JobParameters: 같은 날 중복 실행 방지
+			// JobParameters가 같으면 → 같은 JobInstance
+			// 이미 완료된 JobInstance는 → 다시 실행 안 함
+			// 그래서 runDate만 사용하면 하루에 한 번만 실행됨
+			// Manual execution 수동 실행 파라미터 추가해서 다른 JobInstance 생성
 			JobParameters jobParameters = new JobParametersBuilder()
 				.addString("runDate", LocalDate.now().toString())
-				.addLong("manualExecution", System.currentTimeMillis())  // 수동 실행 구분
+				.addLong("manualExecution", System.currentTimeMillis())
 				.toJobParameters();
 
-			jobLauncher.run(pointIncrementJob, jobParameters);
+			jobLauncher.run(pointIncrementJob, jobParameters);	// pointIncrementJob 
 			
 			log.info("Point 증가 Job 수동 실행 완료");
 

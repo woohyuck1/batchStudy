@@ -51,7 +51,7 @@ public class pointIncrementScheduler {
 				.addString("runDate", LocalDate.now().toString())
 				.toJobParameters();
 			
-			jobLauncher.run(pointIncrementJob, jobParameters);
+			jobLauncher.run(pointIncrementJob, jobParameters); // pointIncrementJob 필드이름과 bean 이름이 같아서 spring 이 자동으로 주입
 			
 			log.info("Point 증가 Job 완료");
 			
