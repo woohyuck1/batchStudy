@@ -60,9 +60,7 @@ public class kafkaConfig {
 		return new DefaultKafkaConsumerFactory<>(configProps);
 	}
 
-	/**
-	 * CloudEvent Kafka Listener Container Factory
-	 */
+
 	@Bean
 	public ConcurrentKafkaListenerContainerFactory<String, CloudEvent> kafkaListenerContainerFactory() {
 		ConcurrentKafkaListenerContainerFactory<String, CloudEvent> factory =

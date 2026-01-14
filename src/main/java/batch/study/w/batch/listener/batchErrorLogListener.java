@@ -37,7 +37,6 @@ public class batchErrorLogListener implements JobExecutionListener {
 				Throwable exception = jobExecution.getFailureExceptions().get(0);
 				errorMessage = exception.getMessage() != null ? exception.getMessage() : "Unknown error";
 				
-				// Stack trace 추출
 				StringWriter sw = new StringWriter();
 				PrintWriter pw = new PrintWriter(sw);
 				exception.printStackTrace(pw);

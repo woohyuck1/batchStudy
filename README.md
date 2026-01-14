@@ -48,11 +48,11 @@ Database
 
 
 2. 배치 아키텍처
-- Job: `pointIncrementJob` - 포인트 증가 배치 작업
-- Step: `pointIncrementStep` - 단일 작업 단위
-- Tasklet: 실제 비즈니스 로직 실행
-- Scheduler: `@Scheduled`를 통한 자동 실행
-- Listener: 배치 실행 전후 이벤트 처리
+	Job : 하나의 비즈니스 배치 프로세스
+    Step : Job을 구성하는 하나의 작업 단위 job 하나에 여러 step이 있을 수 있음
+    Tasklet : Step을 구성하는 작업 단위
+    Chunk : Reader가 null 될 때까지 반복 + N건마다 commit  chunk(100) = 100건을 하나의 트랜잭션으로 처리
+    commit : db에저장
 
 3. 에러 처리 아키텍처
 Service Layer (AOP) → Kafka Producer → Kafka Topic → Kafka Consumer → Database
