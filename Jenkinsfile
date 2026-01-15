@@ -57,10 +57,7 @@ pipeline {
                     def dockerfileExists = fileExists('Dockerfile')
                     if (dockerfileExists) {
                         sh """
-                            # Docker 명령어 실행 가능 여부 확인
-                            docker --version || (echo 'Docker 명령어를 사용할 수 없습니다.' && exit 1)
                             
-                            # Docker 이미지 빌드
                             docker build -t ${DOCKER_IMAGE_NAME} .
                             docker tag ${DOCKER_IMAGE_NAME} ${PROJECT_NAME}:latest
                         """
@@ -83,9 +80,6 @@ pipeline {
                     def dockerfileExists = fileExists('Dockerfile')
                     if (dockerfileExists) {
                         sh """
-                            # Docker 명령어 실행 가능 여부 확인
-                            docker --version || (echo 'Docker 명령어를 사용할 수 없습니다.' && exit 1)
-                            
                             # 기존 컨테이너 중지 및 제거
                             docker stop ${DOCKER_CONTAINER_NAME} || true
                             docker rm ${DOCKER_CONTAINER_NAME} || true
