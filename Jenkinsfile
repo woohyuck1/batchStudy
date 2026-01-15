@@ -62,13 +62,13 @@ pipeline {
                             docker tag ${DOCKER_IMAGE_NAME} ${PROJECT_NAME}:latest
                         """
                     } else {
-                        echo 'Dockerfile이 없습니다. Docker 이미지 빌드를 건너뜁니다.'
+                        echo 'Dockerfile 업서용'
                     }
                 }
             }
         }
         
-        // 5단계: 배포 (선택적)
+        // 5단계: 배포
         stage('Deploy') {
             when {
                 // main 브랜치에만 배포
@@ -92,7 +92,7 @@ pipeline {
                                 ${DOCKER_IMAGE_NAME}
                         """
                     } else {
-                        echo 'Dockerfile이 없습니다. 배포를 건너뜁니다.'
+                        echo 'Dockerfile 없음'
                     }
                 }
             }
@@ -102,12 +102,12 @@ pipeline {
     post {
         // 빌드 성공 시
         success {
-            echo '빌드가 성공!'
+            echo '빌드 성공!'
         }
         
         // 빌드 실패 시
         failure {
-            echo '빌드가 실패'
+            echo '빌드 실패'
         }
         
         // 항상 실행
