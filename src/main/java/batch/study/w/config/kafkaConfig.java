@@ -35,11 +35,11 @@ public class kafkaConfig {
 	public DefaultKafkaProducerFactory<String, CloudEvent> cloudEventProducerFactory() {
 		Map<String, Object> configProps = new HashMap<>();
 		configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-		configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-		configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, CloudEventSerializer.class);
+		configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);			// key사용안해도 있어야됨 기본적으로 null이 들어감
+		configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, CloudEventSerializer.class);	// cloudEvent 
 		configProps.put(ProducerConfig.ACKS_CONFIG, "all"); // 모든 replica에 전송 확인
 		configProps.put(ProducerConfig.RETRIES_CONFIG, 3); // 재시도 횟수
-		configProps.put(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, true); // 멱등성 보장
+		configProps.put(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, true); // 같은 메시지를 중복 전송하지 않도록. (멱등성 보장)
 		return new DefaultKafkaProducerFactory<>(configProps);
 	}
 
