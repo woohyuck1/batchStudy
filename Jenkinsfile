@@ -22,13 +22,37 @@ pipeline {
             }
         }
         
+        // Docker CLI 설치 (필요한 경우)
+        stage('Install Docker CLI') {
+            steps {
+                echo 'Docker CLI 설치 확인 중...'
+                script {
+                    sh '''
+                        # Docker CLI가 설치되어 있는지 확인
+                        if ! command -v docker &> /dev/null; then
+                            echo "Docker CLI 설치 중..."
+                            # Debian/Ubuntu 기반
+                            apt-get update || true
+                            apt-get install -y docker.io || true
+                            # 또는 Docker 공식 저장소에서 설치
+                            # curl -fsSL https://get.docker.com -o get-docker.sh
+                            # sh get-docker.sh
+                        else
+                            echo "Docker CLI가 이미 설치되어 있습니다."
+                        fi
+                        docker --version
+                    '''
+                }
+            }
+        }
+        
         // 2단계: 빌드
         stage('Build') {
             steps {
                 echo '프로젝트 빌드 중...'
                 sh '''
-                    chmod +x ./gradlew
-                    ./gradlew clean build -x test
+                    chmod +x ./gradlew || true
+                    bash ./gradlew clean build -x test
                 '''
             }
         }
@@ -37,7 +61,7 @@ pipeline {
         stage('Test') {
             steps {
                 echo '테스트 실행 중...'
-                sh './gradlew test'
+                sh 'bash ./gradlew test'
             }
             post {
                 always {
@@ -52,10 +76,13 @@ pipeline {
             steps {
                 echo 'Docker 이미지 빌드 중...'
                 script {
-                  
                     def dockerfileExists = fileExists('Dockerfile')
                     if (dockerfileExists) {
                         sh """
+                            # Docker 명령어 실행 가능 여부 확인
+                            docker --version || (echo 'Docker 명령어를 사용할 수 없습니다.' && exit 1)
+                            
+                            # Docker 이미지 빌드
                             docker build -t ${DOCKER_IMAGE_NAME} .
                             docker tag ${DOCKER_IMAGE_NAME} ${PROJECT_NAME}:latest
                         """
@@ -78,6 +105,9 @@ pipeline {
                     def dockerfileExists = fileExists('Dockerfile')
                     if (dockerfileExists) {
                         sh """
+                            # Docker 명령어 실행 가능 여부 확인
+                            docker --version || (echo 'Docker 명령어를 사용할 수 없습니다.' && exit 1)
+                            
                             # 기존 컨테이너 중지 및 제거
                             docker stop ${DOCKER_CONTAINER_NAME} || true
                             docker rm ${DOCKER_CONTAINER_NAME} || true
