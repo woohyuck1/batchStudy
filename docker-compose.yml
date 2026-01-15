@@ -91,7 +91,9 @@ services:
 
   # Jenkins: CI/CD 자동화 도구
   jenkins:
-    image: jenkins/jenkins:latest-jdk21
+    build:
+      context: .
+      dockerfile: Dockerfile.jenkins
     # 컨테이너 이름 지정
     container_name: jenkins
     user: root

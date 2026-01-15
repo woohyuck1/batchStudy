@@ -1,0 +1,11 @@
+# Jenkins with Docker CLI
+FROM jenkins/jenkins:latest-jdk21
+
+USER root
+
+# Docker CLI 설치
+RUN apt-get update && \
+    apt-get install -y docker.io && \
+    rm -rf /var/lib/apt/lists/*
+
+USER jenkins
