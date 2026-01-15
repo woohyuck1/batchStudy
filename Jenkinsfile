@@ -1,10 +1,6 @@
 pipeline {
     agent any
     
-    tools {
-        jdk 'jdk-21'
-    }
-    
     environment {
         PROJECT_NAME = 'batch-study'
         DOCKER_IMAGE_NAME = "${PROJECT_NAME}:${BUILD_NUMBER}"
@@ -22,38 +18,20 @@ pipeline {
             }
         }
         
-        // Docker CLI 설치 (필요한 경우)
-        stage('Install Docker CLI') {
-            steps {
-                echo 'Docker CLI 설치 확인 중...'
-                script {
-                    sh '''
-                        # Docker CLI가 설치되어 있는지 확인
-                        if ! command -v docker &> /dev/null; then
-                            echo "Docker CLI 설치 중..."
-                            # Debian/Ubuntu 기반
-                            apt-get update || true
-                            apt-get install -y docker.io || true
-                            # 또는 Docker 공식 저장소에서 설치
-                            # curl -fsSL https://get.docker.com -o get-docker.sh
-                            # sh get-docker.sh
-                        else
-                            echo "Docker CLI가 이미 설치되어 있습니다."
-                        fi
-                        docker --version
-                    '''
-                }
-            }
-        }
-        
         // 2단계: 빌드
         stage('Build') {
             steps {
                 echo '프로젝트 빌드 중...'
-                sh '''
-                    chmod +x ./gradlew || true
-                    bash ./gradlew clean build -x test
-                '''
+                script {
+                    sh '''
+                        # Java 버전 확인
+                        java -version
+                        
+                        # Gradle 빌드
+                        chmod +x ./gradlew || true
+                        bash ./gradlew clean build -x test
+                    '''
+                }
             }
         }
         

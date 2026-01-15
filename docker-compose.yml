@@ -94,6 +94,7 @@ services:
     image: jenkins/jenkins:latest-jdk21
     # 컨테이너 이름 지정
     container_name: jenkins
+    user: root
     ports:
       # Jenkins 웹 UI 접속용 포트 (브라우저에서 localhost:8081로 접속)
       - "8081:8080"
