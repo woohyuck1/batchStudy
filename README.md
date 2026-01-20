@@ -76,5 +76,8 @@ Service Layer (AOP) → Kafka Producer → Kafka Topic → Kafka Consumer → Da
 Java 21, Spring Boot 3.5.0, MariaDB, Kafka
 
 
-2026.01.21 spring webflux
+2026.01.21 spring webflux 
+	Spring MVC Security랑 WebFlux Security를 같이 쓰면
+	Security 관련 Bean이 중복 등록돼서 에러가 난다....
+	그리고 2개다 있으면 기본적으로 MVC가 먼저 활성화된다...
 
