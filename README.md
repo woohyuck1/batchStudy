@@ -74,3 +74,7 @@ Service Layer (AOP) → Kafka Producer → Kafka Topic → Kafka Consumer → Da
 - CI/CD 파이프라인 구축
 
 Java 21, Spring Boot 3.5.0, MariaDB, Kafka
+
+
+2026.01.21 spring webflux
+
