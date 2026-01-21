@@ -18,6 +18,7 @@ public class userDto {
 	private String userId;
 	private String userName;
 	private String password;
+	private String roles;
 	private Integer creDt;
 	private Integer delYn;
 
@@ -26,6 +27,7 @@ public class userDto {
 			// .userSeq(userEntity.getUserSeq())
 			.userId(userEntity.getUserId())
 			.userName(userEntity.getUserName())
+			.roles(userEntity.getRoles())
 			.creDt(userEntity.getCreDt())
 			.delYn(userEntity.getDelYn())
 			.build();

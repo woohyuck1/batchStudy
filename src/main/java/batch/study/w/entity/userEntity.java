@@ -31,11 +31,15 @@ public class userEntity extends baseEntity {
 	@Column(name = "password")
 	private String password;
 
+	@Column(name = "roles")
+	private String roles;
+
 	@Builder
-	public userEntity(String userId, String userName, String password) {
+	public userEntity(String userId, String userName, String password, String roles) {
 		this.userId = userId;
 		this.userName = userName;
 		this.password = password;
+		this.roles = roles;
 	}
 
 	public void updateUserName(String userName) {

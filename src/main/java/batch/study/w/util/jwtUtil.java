@@ -21,16 +21,25 @@ public class jwtUtil {
 	private final jwtProperties jwtProperties;
 
 	public String generateToken(Long userSeq, String userId) {
+		return generateToken(userSeq, userId, null);
+	}
+
+	public String generateToken(Long userSeq, String userId, String roles) {
 		try {
 			Date now = new Date();
 			Date expiryDate = new Date(now.getTime() + jwtProperties.getExpiration());
 
-			return Jwts.builder()
+			var builder = Jwts.builder()
 				.subject(String.valueOf(userSeq))
 				.claim("userId", userId)
 				.issuedAt(now)
-				.expiration(expiryDate)
-				.signWith(getSigningKey())
+				.expiration(expiryDate);
+
+			if (roles != null && !roles.isEmpty()) {
+				builder.claim("roles", roles);
+			}
+
+			return builder.signWith(getSigningKey())
 				.compact();
 		} catch (IllegalArgumentException e) {
 			log.error("JWT 토큰 생성 중 오류 발생: ", e);
@@ -68,6 +77,20 @@ public class jwtUtil {
 		} catch (Exception e) {
 			log.error("JWT 토큰 파싱  ", e);
 			throw new BusinessException(ErrorCode.UNAUTHORIZED);
+		}
+	}
+
+	public String getRolesFromToken(String token) {
+		try {
+			return Jwts.parser()
+				.verifyWith(getSigningKey())
+				.build()
+				.parseSignedClaims(token)
+				.getPayload()
+				.get("roles", String.class);
+		} catch (Exception e) {
+			log.error("role이 없네? ", e);
+			return null;
 		}
 	}
 

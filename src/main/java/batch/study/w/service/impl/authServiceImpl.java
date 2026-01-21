@@ -9,12 +9,15 @@ import batch.study.w.repository.userRepo;
 import batch.study.w.service.authService;
 import batch.study.w.util.jwtUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class authServiceImpl implements authService {
 
 	private final userRepo userRepository;
@@ -24,7 +27,7 @@ public class authServiceImpl implements authService {
 	@Override
 	@Transactional(readOnly = true)
 	public loginResponseDto login(loginRequestDto loginRequestDto) {
-		// 사용자 조회 (삭제되지 않은 사용자만)
+		
 		userEntity user = userRepository.findByUserIdAndDelYn(loginRequestDto.getUserId(), 0)
 			.orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
 
@@ -36,9 +39,9 @@ public class authServiceImpl implements authService {
 		if (!passwordEncoder.matches(loginRequestDto.getPassword(), user.getPassword())) {
 			throw new BusinessException(ErrorCode.LOGIN_FAILED);
 		}
-
+		log.info("user.getRoles(): {}", user.getRoles());
 		// JWT 토큰 생성
-		String accessToken = jwtUtil.generateToken(user.getUserSeq(), user.getUserId());
+		String accessToken = jwtUtil.generateToken(user.getUserSeq(), user.getUserId(), user.getRoles());
 
 		// 응답 DTO 생성 
 		return loginResponseDto.builder()

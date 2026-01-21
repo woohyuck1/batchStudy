@@ -6,7 +6,7 @@ import batch.study.w.dto.userDto;
 import batch.study.w.dto.userRequestDto;
 import batch.study.w.entity.userEntity;
 import batch.study.w.entity.userPointEntity;
-import batch.study.w.repository.userPointRepository;
+import batch.study.w.repository.userPointRepo;
 import batch.study.w.repository.userRepo;
 import batch.study.w.repository.userBatchRepo;
 import batch.study.w.service.userService;
@@ -32,7 +32,7 @@ public class userServiceImpl implements userService {
 	private final userRepo userRepository;
 	private final userBatchRepo userBatchRepo;
 	private final PasswordEncoder passwordEncoder;
-	private final userPointRepository userPointRepository;
+	private final userPointRepo userPointRepository;
 
 	@Override
 	@Transactional(readOnly = true)

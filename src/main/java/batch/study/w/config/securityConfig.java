@@ -1,6 +1,8 @@
 package batch.study.w.config;
 
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import batch.study.w.config.jwt.jwtAuthenticationFilter;
@@ -17,9 +19,19 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
 
+/**
+ * MVC Security 설정
+ * 
+ * Spring MVC 서블릿 기반 엔드포인트 Security 설정
+ * - @EnableWebSecurity: MVC Security 활성화
+ * - SecurityFilterChain: MVC 엔드포인트 보호
+ * - jwtAuthenticationFilter: OncePerRequestFilter (서블릿 기반)
+ *   - SecurityContextHolder 사용 (서블릿 기반)
+ */
 @Slf4j
 @Configuration
 @EnableWebSecurity
+@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 public class securityConfig {
 
 	private final jwtAuthenticationFilter jwtAuthenticationFilter;
@@ -52,9 +64,10 @@ public class securityConfig {
 	@Bean
 	public WebSecurityCustomizer webSecurityCustomizer() {
 		// 보안 필터 제외
-		return web -> web.ignoring().requestMatchers(IGNORE_PATTERNS);
+		return web -> web.ignoring()
+			.requestMatchers(IGNORE_PATTERNS);
 	}
-	@Bean
+	@Bean(name = "mvcCorsConfigurationSource")
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.setAllowCredentials(true);
@@ -65,16 +78,17 @@ public class securityConfig {
         return source;
     }
 
-	@Bean
+	@Bean(name = "mvcSecurityFilterChain")
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
 			.csrf(AbstractHttpConfigurer::disable)
 			.cors(cors -> cors.configurationSource(corsConfigurationSource()))
 			.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-
+			// JWT 인증 필터 추가
 			.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
 			.authorizeHttpRequests(web -> web
 				.requestMatchers(AUTH_WHITELIST).permitAll()
+				.requestMatchers("/reactive/**").permitAll()
 				.anyRequest().authenticated()
 			);
 
