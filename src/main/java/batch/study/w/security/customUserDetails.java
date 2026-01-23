@@ -30,9 +30,10 @@ public class customUserDetails implements UserDetails {
 		this.password = password;
 		this.authorities = parseRoles(roles);
 	}
-
+	//role없으면 USER권한  
+	//  extends GrantedAuthority 스프링 시큐리티의 권한을 표현하는 표준 
 	private Collection<? extends GrantedAuthority> parseRoles(String roles) {
-		if (roles == null || roles.isEmpty()) {		//role없으면 USER권한 
+		if (roles == null || roles.isEmpty()) {		
 			return Collections.singletonList(new SimpleGrantedAuthority("USER"));
 		}
 

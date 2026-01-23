@@ -2,7 +2,8 @@ package batch.study.w.config.jwt;
 
 import batch.study.w.common.exception.ErrorCode;
 import batch.study.w.common.response.apiResponse;
-import batch.study.w.service.jwtAuthenticationService;
+import batch.study.w.security.jwtAuthenticationService;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -21,14 +22,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-/**
- * JWT 인증 필터 (MVC)
- * 
- * Spring MVC 서블릿 기반 엔드포인트에서 JWT 인증 처리
- * - OncePerRequestFilter: 서블릿 필터 체인에서 동작
- * - SecurityContextHolder: 서블릿 기반 Security Context 사용
- * - jwtAuthenticationService: 공통 JWT 인증 로직 사용
- */
 @Slf4j
 @Component
 @RequiredArgsConstructor

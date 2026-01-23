@@ -1,4 +1,4 @@
-package batch.study.w.service;
+package batch.study.w.kafka;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.cloudevents.CloudEvent;

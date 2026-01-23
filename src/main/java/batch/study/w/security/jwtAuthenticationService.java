@@ -1,6 +1,5 @@
-package batch.study.w.service;
+package batch.study.w.security;
 
-import batch.study.w.security.customUserDetails;
 import batch.study.w.util.jwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
